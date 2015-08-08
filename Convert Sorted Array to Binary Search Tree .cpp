@@ -1,5 +1,5 @@
 /**
- * Definition for binary tree
+ * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
  *     TreeNode *left;
@@ -9,32 +9,17 @@
  */
 class Solution {
 public:
-	TreeNode *recursive(vector<int> &num, int left, int right)
-	{
-		if(left == right)
-		{
-			TreeNode *t = new TreeNode(num[left]);
-			return t;
-		}
-		else if(left == right - 1)
-		{
-			TreeNode *t1 = new TreeNode(num[left]);
-			TreeNode *t2 = new TreeNode(num[right]);
-			t1->right = t2;
-			return t1;
-		}
-		else
-		{
-			int mid = (left + right) / 2;
-			TreeNode *t = new TreeNode(num[mid]);
-			t->left = recursive(num, left, mid - 1);
-			t->right = recursive(num, mid + 1, right);
-			return t;
-		}
-	}
-    TreeNode *sortedArrayToBST(vector<int> &num) {
-    	if(num.size() == 0)
-    		return NULL;
-    	return recursive(num, 0, num.size() - 1);
+    TreeNode* create(vector<int> &nums, int l, int r)
+    {
+        if(l > r)
+            return NULL;
+        int pos = (l+r)/2;
+        TreeNode *root = new TreeNode(nums[pos]);
+        root->left = create(nums, l, pos-1);
+        root->right = create(nums, pos+1, r);
+        return root;
+    }
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return create(nums, 0, nums.size()-1);
     }
 };
